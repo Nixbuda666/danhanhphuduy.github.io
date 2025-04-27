@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triết Học 2 | Trình chiếu tương tác</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    #slides {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      height: 100vh;
+      margin-left: 220px;
+      transition: margin-left 0.3s ease;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 220px;
+      height: 100%;
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 30px 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+    .sidebar-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 101;
+      background-color: #1a1a1a;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      margin: 15px 0;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .sidebar a:hover {
+      color: #fff;
+    }
+    section {
+      min-height: 100vh;
+      padding: 100px 40px 60px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+      animation: fadeInUp 1s ease-out both;
+    }
+    .slide-title {
+      font-size: 2.5rem;
+      color: #fff;
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+      animation: fadeInDown 1s ease-out;
+    }
+    .slide-text {
+      max-width: 900px;
+      color: #f1f1f1;
+      text-align: justify;
+      font-size: 1.1rem;
+      margin-top: 25px;
+      line-height: 1.8;
+      animation: fadeInUp 1.2s ease-out;
+    }
+    .slide-image {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 30px;
+      cursor: pointer;
+      border: 6px solid white;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      transition: transform 0.3s ease;
+      animation: zoomIn 1s ease;
+    }
+    .slide-image:hover {
+      transform: scale(1.05);
+    }
+    #popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #111;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.5s ease;
+      z-index: 999;
+    }
+    #popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    footer {
+      background: #111;
+      color: #eee;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media screen and (max-width: 768px) {
+      #slides {
+        margin-left: 0;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.collapsed {
+        transform: translateX(0);
+      }
+      .sidebar-toggle {
+        left: 10px;
+      }
+      .slide-title {
+        font-size: 2rem;
+      }
+      .slide-text {
+        font-size: 1rem;
+      }
+      .slide-image {
+        width: 220px;
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="sidebar-toggle" onclick="toggleSidebar()">📚 Mục lục</button>
+  <div class="sidebar" id="sidebar">
+    <h2>📚 Mục lục</h2>
+    <a href="#chap1">Chương I</a>
+    <a href="#chap2">Chương II</a>
+    <a href="#chap3">Chương III</a>
+    <a href="#chap4">Chương IV</a>
+  </div>
+
+  <div id="slides">
+    <section id="chap1" style="background: linear-gradient(135deg, #2c3e50, #34495e);">
+      <h1 class="slide-title">CHƯƠNG I: Giới thiệu Triết học</h1>
+      <p class="slide-text">Triết học là bộ môn nghiên cứu những vấn đề căn bản, trừu tượng và phổ quát nhất về con người và thế giới, như tồn tại, tri thức, chân lý, đạo đức và ý thức. Nó giúp con người định hình tư duy phản biện, khám phá bản chất sự vật và hình thành thế giới quan sâu sắc. Triết học không chỉ là một lĩnh vực học thuật mà còn là kim chỉ nam cho tư duy và hành động. Bằng cách đặt câu hỏi "Tại sao?" và "Thế nào là đúng?", triết học mở ra khả năng nhìn nhận thế giới từ nhiều chiều hướng khác nhau và phát triển khả năng lập luận logic, phản biện và sáng tạo.</p>
+      <img src="hinhanh/triethoc1.jpg" class="slide-image" alt="Hình minh họa chương I">
+    </section>
+
+    <section id="chap2" style="background: linear-gradient(135deg, #6a11cb, #2575fc);">
+      <h1 class="slide-title">CHƯƠNG II: Các trường phái triết học</h1>
+      <p class="slide-text">Lịch sử triết học ghi nhận sự phát triển đa dạng của nhiều trường phái: từ duy vật và duy tâm cổ điển, đến hiện sinh, hậu hiện đại và phân tích trong thời hiện đại. Duy vật coi vật chất là nền tảng của thế giới, trong khi duy tâm xem ý thức là bản thể gốc. Chủ nghĩa hiện sinh tập trung vào tự do cá nhân và sự hiện diện trong thế giới vô nghĩa, còn triết học phân tích chú trọng cấu trúc ngôn ngữ và logic. Mỗi trường phái phản ánh một cách nhìn độc đáo về thế giới, đồng thời phản ánh bối cảnh lịch sử, xã hội và tư tưởng của thời đại. Việc tiếp cận triết học thông qua các trường phái giúp sinh viên có cái nhìn hệ thống và phong phú hơn về lịch sử tư tưởng nhân loại.</p>
+      <img src="hinhanh/triethoc2.jpg" class="slide-image" alt="Hình minh họa chương II">
+    </section>
+
+    <section id="chap3" style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);">
+      <h1 class="slide-title">CHƯƠNG III: Nhận thức luận</h1>
+      <p class="slide-text">Nhận thức luận là một ngành của triết học chuyên nghiên cứu bản chất, nguồn gốc và giới hạn của tri thức. Câu hỏi cốt lõi của nhận thức luận là: "Làm sao ta biết điều ta biết là đúng?" Tri thức có thể được đạt được qua cảm giác, lý trí, kinh nghiệm hay mặc khải? Nhận thức luận phân biệt giữa niềm tin, chân lý và sự biện minh, đồng thời khảo sát những phương pháp nhận thức đáng tin cậy. Trong thế giới hiện đại, nhận thức luận còn đóng vai trò quan trọng trong khoa học, giáo dục và trí tuệ nhân tạo, khi con người đối diện với lượng thông tin khổng lồ và cần phân biệt giữa tri thức thực và ngụy tạo.</p>
+      <img src="hinhanh/triethoc3.jpg" class="slide-image" alt="Hình minh họa chương III">
+    </section>
+
+    <section id="chap4" style="background: linear-gradient(135deg, #c31432, #240b36);">
+      <h1 class="slide-title">CHƯƠNG IV: Đạo đức và Giá trị</h1>
+      <p class="slide-text">Triết học đạo đức đặt ra những câu hỏi cốt lõi: "Thế nào là điều đúng?", "Thế nào là một cuộc sống có giá trị?". Nó phân tích các hệ thống đạo đức như chủ nghĩa vị lợi, nghĩa vụ luận và đạo đức đức hạnh, từ đó đánh giá hành vi con người. Đạo đức học không chỉ mang tính lý thuyết mà còn định hướng thực tiễn – từ cá nhân đến xã hội, từ chính trị đến môi trường. Trong thời đại ngày nay, việc đặt lại các giá trị đạo đức truyền thống là cấp thiết, khi con người đối mặt với các vấn đề đạo đức mới như quyền riêng tư số, đạo đức sinh học, công bằng trí tuệ nhân tạo và tính bền vững toàn cầu.</p>
+      <img src="hinhanh/triethoc4.jpg" class="slide-image" alt="Hình minh họa chương IV">
+    </section>
+  </div>
+
+  <footer>
+    <p>Thiết kế bởi Công Nghệ Việt | Danh Anh & Phú Duy</p>
+  </footer>
+
+  <div id="popup">💡 Thiết kế bởi: DANH ANH | PHÚ DUY 💣</div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const slides = document.getElementById('slides');
+      sidebar.classList.toggle('collapsed');
+      if (sidebar.classList.contains('collapsed')) {
+        slides.style.marginLeft = '0';
+      } else {
+        slides.style.marginLeft = window.innerWidth <= 768 ? '0' : '220px';
+      }
+    }
+
+    window.addEventListener('scroll', function () {
+      const popup = document.getElementById('popup');
+      if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 50)) {
+        popup.classList.add('show');
+      } else {
+        popup.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
+

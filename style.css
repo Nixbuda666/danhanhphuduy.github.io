@@ -1,0 +1,7 @@
+body { margin:0; font-family: 'Segoe UI', sans-serif; }
+#slides { margin-left:220px; transition: margin-left 0.3s ease; }
+.sidebar { width:220px; position:fixed; height:100%; background:#1a1a1a; color:white; transition:transform 0.3s ease; }
+.sidebar.collapsed { transform: translateX(-100%); }
+.sidebar-toggle { position:fixed; top:20px; left:20px; background:#1a1a1a; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; z-index:101; }
+#popup { position:fixed; bottom:20px; right:20px; background:#111; color:#fff; padding:10px 20px; border-radius:50px; font-size:1rem; opacity:0; transform:translateY(50px); transition:all 0.5s ease; z-index:999; }
+#popup.show { opacity:1; transform:translateY(0); }
